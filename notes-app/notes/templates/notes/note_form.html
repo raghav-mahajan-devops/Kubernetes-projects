@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ is_edit|yesno:"Edit note,New note" }}</h1>
+<form method="post" class="note-form">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {{ form.title.errors }}{{ form.title }}
+  {{ form.content.errors }}{{ form.content }}
+  <label>{{ form.pinned }} Pin this note</label>
+  <div class="actions">
+    <button class="btn">Save</button>
+    <a href="{% if is_edit %}{% url 'note_detail' note.pk %}{% else %}{% url 'note_list' %}{% endif %}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

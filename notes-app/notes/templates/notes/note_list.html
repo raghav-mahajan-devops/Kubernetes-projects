@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="get" class="search">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search notes...">
+  <button class="btn">Search</button>
+  {% if q %}<a href="{% url 'note_list' %}">Clear</a>{% endif %}
+</form>
+
+<div class="grid">
+  {% for note in notes %}
+  <article class="card{% if note.pinned %} pinned{% endif %}">
+    <form method="post" action="{% url 'note_toggle_pin' note.pk %}" class="pin">
+      {% csrf_token %}
+      <button title="{{ note.pinned|yesno:'Unpin,Pin' }}">{{ note.pinned|yesno:"📌,📍" }}</button>
+    </form>
+    <h3><a href="{% url 'note_detail' note.pk %}">{{ note.title }}</a></h3>
+    <p>{{ note.content|truncatechars:160 }}</p>
+    <small>Updated {{ note.updated_at|timesince }} ago</small>
+  </article>
+  {% empty %}
+  <p class="empty">{% if q %}No notes match "{{ q }}".{% else %}No notes yet — create your first one.{% endif %}</p>
+  {% endfor %}
+</div>
+{% endblock %}
