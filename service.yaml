@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+
+metadata:
+  name: web-app-service
+
+spec:
+  selector:
+    app: notes-app
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
