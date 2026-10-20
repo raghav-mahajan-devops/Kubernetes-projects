@@ -18,9 +18,17 @@ spec:
           image: raghavdevops10/notes-app:latest
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: 200m
+              memory: 128Mi
+            limits:
+              cpu: 400m
+              memory: 256Mi
+
           env:
             - name: DJANGO_ALLOWED_HOSTS
-              value: "localhost,127.0.0.1,notes-svc,<your-domain-or-node-ip>"
+              value: "localhost,127.0.0.1,notes-svc,ec2-13-204-85-238.ap-south-1.compute.amazonaws.com"
           readinessProbe:
             httpGet:
               path: /health/
