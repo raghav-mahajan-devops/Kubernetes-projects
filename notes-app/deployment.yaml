@@ -28,7 +28,7 @@ spec:
 
           env:
             - name: DJANGO_ALLOWED_HOSTS
-              value: "localhost,127.0.0.1,notes-svc,ec2-13-204-85-238.ap-south-1.compute.amazonaws.com"
+              value: "localhost,127.0.0.1,notes-svc,ec2-13-204-85-238.ap-south-1.compute.amazonaws.com,web-app-service,web-app-service.webapp.svc.cluster.local"
           readinessProbe:
             httpGet:
               path: /health/
