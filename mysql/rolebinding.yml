@@ -1,0 +1,26 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: 
+  name: pods-manager 
+  namespace: mysql
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get"]
+    
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pods-manager-binding
+  namespace: mysql
+subjects:
+  - kind: ServiceAccount
+    name: mysql-sa
+    namespace: mysql
+
+roleRef:
+  kind: Role
+  name: pods-manager
+  apiGroup: rbac.authorization.k8s.io
