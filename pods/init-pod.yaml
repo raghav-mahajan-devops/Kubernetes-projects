@@ -1,0 +1,17 @@
+kind: Pod
+apiVersion: v1
+
+metadata:
+  name: init-pods
+
+spec:
+  initContainers:
+    - name: init-container
+      image: busybox:latest
+      command: ["sh","-c","echo 'started the init container';sleep 20; echo 'init conatiner is completed'"]
+
+  containers:
+    - name: main-container
+      image: busybox:latest
+      command: ["sh","-c","echo 'main container is started'"]
+
