@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: chatapp
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  template:
+    name: backend-pod
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: raghavdevops10/backend:latest
+        ports:
+        - containerPort: 5001
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: NODE_ENV
