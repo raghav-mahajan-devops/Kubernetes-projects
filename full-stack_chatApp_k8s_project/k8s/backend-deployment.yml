@@ -9,8 +9,8 @@ spec:
       app: backend
   replicas: 1
   template:
-    name: backend-pod
     metadata:
+      name: backend-pod
       labels:
         app: backend
     spec:
@@ -23,5 +23,20 @@ spec:
         - name: NODE_ENV
           valueFrom:
             configMapKeyRef:
-              name: backend-config
+              name: chatapp-config
               key: NODE_ENV
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: chatapp-secrets
+              key: mongodb-uri
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: chatapp-secrets
+              key: jwt-secret
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: chatapp-config
+              key: PORT
