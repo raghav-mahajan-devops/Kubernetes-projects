@@ -1,16 +1,46 @@
 # Kubernetes Projects
 
 A collection of Kubernetes examples and deployment manifests, from core workload
-resources to a containerized Django notes application.
+resources to containerized applications such as the Django notes app and
+real-time chat app.
 
 ## Repository contents
 
 | Directory | Contents |
 |---|---|
 | [`notes-app/`](./notes-app/) | Django notes application, Dockerfile, and Kubernetes manifests for its namespace, Deployment, Service, and HorizontalPodAutoscaler. See its [README](./notes-app/README.md) for application details and local setup. |
+| [`full-stack_chatApp_k8s_project/`](./full-stack_chatApp_k8s_project/) | Real-time chat application with Kubernetes manifests for the backend and MongoDB, including Services, configuration, Secrets, and persistent storage. |
 | [`samples/`](./samples/) | Standalone examples of Deployments, ReplicaSets, DaemonSets, Jobs, CronJobs, Services, ConfigMaps, PersistentVolumes, and StatefulSets. |
 | [`mysql/`](./mysql/) | MySQL Kubernetes resources, including a StatefulSet, Service, ConfigMap, Secret, namespace, and service account/RBAC examples. |
 | [`pods/`](./pods/) | Pod examples demonstrating init containers and sidecar containers. |
+
+## Deploy the chat app backend and database
+
+Replace the example credentials in `k8s/secrets.yml` before deploying. Kubernetes
+Secret values in a manifest are base64-encoded, not encrypted.
+
+Apply the namespace first, then the configuration and storage resources, and
+finally the database and backend:
+
+```sh
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/namespace.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/config.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/secrets.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/mongodb-pv.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/mongodb-pvc.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/mongodb-service.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/mongodb-deployment.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/backend-service.yml
+kubectl apply -f full-stack_chatApp_k8s_project/k8s/backend-deployment.yml
+```
+
+Check that both workloads become ready:
+
+```sh
+kubectl rollout status deployment/mongodb -n chatapp
+kubectl rollout status deployment/backend-deployment -n chatapp
+kubectl get pods,services -n chatapp
+```
 
 ## Deploy the notes app
 
